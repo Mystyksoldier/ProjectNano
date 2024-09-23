@@ -1,15 +1,13 @@
 import random
 
-
 def chooseYourGame():
-    choice = input("Kies een spel(Raad het nummer, Dagboek, Steen papier schaar): ").lower()
+    choice = input("Kies een spel(Raad het nummer, Galgje, Steen papier schaar): ").lower()
     if choice == "raad het nummer":
         GuessTheNumber()
     elif choice == "galgje":
         Galgje()
     else:
         print(f"{choice} is nog niet geimplementeerd")
-
 
 def GuessTheNumber():
     TheNumber = random.randint(1, 100)
