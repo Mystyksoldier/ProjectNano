@@ -1,0 +1,1 @@
+hond,kat,huis,boom,zon,maan,water,vuur,brood,stoel,tafel,fiets,school,vader,moeder

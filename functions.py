@@ -1,11 +1,23 @@
 import random
 
+def welcome():
+    print("**************************************")
+    print("*                                    *")
+    print("*      WELKOM BIJ PROJECT NANO!      *")
+    print("*                                    *")
+    print("**************************************")
+    print("")
+    print("Gemaakt door Dave Havelaar.")
+    print("")
+
 def chooseYourGame():
-    choice = input("Kies een spel(Raad het nummer, Galgje, Steen papier schaar): ").lower()
-    if choice == "raad het nummer":
+    choice = input("Kies een spel(1: Raad het nummer, 2: Galgje, 3: Steen papier schaar): ").lower()
+    if choice == "1":
         GuessTheNumber()
-    elif choice == "galgje":
+    elif choice == "2":
         Galgje()
+    elif choice == "3":
+        rockPaperScissors()
     else:
         print(f"{choice} is nog niet geimplementeerd")
 
@@ -24,6 +36,13 @@ def GuessTheNumber():
 
     if coupon == coupons and TheGuess != TheNumber:
         print("je hebt het spel verloren take the L")
+    
+    #ask for a replay
+    replay = input("Wil je nog een keer spelen? (ja/nee): ").lower()
+    if replay == "ja":
+        GuessTheNumber()
+    else:
+        print("Bedankt voor het spelen!")
 
 def Galgje():
     galgjefiguur = [
@@ -95,15 +114,37 @@ def Galgje():
     goedeLetters = []
     fouteLetters = []
 
-    woord = input("Geef een woord om te gebruiken voor het spel: ").lower()
+    file_name = None
+
+    #continue the task til a difficulty is chosen
+    while file_name is None:
+
+        difficulty = input("Geef de moeilijkheidsgraad aan (makkelijk, normaal, moeilijk): ").lower()
+
+        if difficulty == "makkelijk":
+            file_name = "data/easy.txt"
+        elif difficulty == "normaal":
+            file_name = "data/normal.txt"
+        elif difficulty == "moeilijk":
+            file_name = "data/hard.txt"
+        else:
+            print("Dit is niet geïmplementeerd")
+    
+    #opens the correct dificulty file and spilt the words
+    with open(file_name, "r") as f:
+        list = f.read().split(",")
+
+    woord = random.choice(list).lower()
 
     status = ["_" for _ in woord]
 
     while True:
+        #shows the game status and the letters that are already guessed
         print(galgjefiguur[len(fouteLetters)])
         print("Woord: " + " ".join(status))
         print(f"Foute letters: {', '.join(fouteLetters)}")
 
+        #checks if you won or lost the game
         if "_" not in status:
             print("Gefeliciteerd! Je hebt het woord geraden!")
             break
@@ -113,6 +154,7 @@ def Galgje():
 
         letter = input("Geef een letter: ").lower()
 
+        #checks if the input is correct
         if len(letter) != 1 or not letter.isalpha():
             print("Ongeldige invoer. Geef een enkele letter.")
             continue
@@ -120,6 +162,7 @@ def Galgje():
             print("Je hebt deze letter al geraden. Probeer een andere letter.")
             continue
 
+        #checks if the letter is in the word if not the in the wrong letters list
         if letter in woord:
             print(f"Het woord bevat de letter '{letter}'")
             goedeLetters.append(letter)
@@ -130,3 +173,86 @@ def Galgje():
         else:
             print(f"Het woord bevat niet de letter '{letter}'")
             fouteLetters.append(letter)
+
+    #ask for a replay
+    replay = input("Wil je nog een keer spelen? (ja/nee): ").lower()
+    if replay == "ja":
+        Galgje()
+    else:
+        print("Bedankt voor het spelen!")
+
+def rockPaperScissors():
+    
+    gameRounds = None
+
+    while gameRounds is None:
+
+        gameMode = input("kies de game mode (1: tot de drie punten, 2: tot de vijf punten, 3: één ronde,): ")
+
+        if gameMode == "1":
+            gameRounds = 3
+        elif gameMode == "2":
+            gameRounds = 5
+        elif gameMode == "3":
+            gameRounds = 1
+
+    playerScore = 0
+    computerScore = 0
+    rounds = 0
+
+    while True:
+
+        #checks if the game is over
+        if playerScore == gameRounds or computerScore == gameRounds:
+            if playerScore > computerScore:
+                print(f"Je hebt gewonnen met {playerScore} tegen {computerScore}")
+            elif playerScore < computerScore:
+                print(f"Je hebt verloren met {playerScore} tegen {computerScore}")
+            else:
+                print(f"Het is gelijkspel met {playerScore} tegen {computerScore}")
+            break
+        else:
+            #print the score and the round
+            print(f"Speler: {playerScore} - Computer: {computerScore}")
+            print(f"Ronde {rounds}")
+
+            playerChoice = input("Kies steen, papier of schaar: ").lower()
+
+            if playerChoice not in ["steen", "papier", "schaar"]:
+                print("Ongeldige invoer. Kies steen, papier of schaar.")
+                continue
+            else:
+                #game continues
+                computerChoice = random.choice(["steen", "papier", "schaar"])
+
+                if playerChoice == computerChoice:
+                    print(f"Computer koos {computerChoice}. Het is gelijkspel.")
+                elif playerChoice == "steen":
+                    if computerChoice == "papier":
+                        print(f"Computer koos {computerChoice}. Computer wint!")
+                        computerScore += 1
+                    else:
+                        print(f"Computer koos {computerChoice}. Jij wint!")
+                        playerScore += 1
+                elif playerChoice == "papier":
+                    if computerChoice == "schaar":
+                        print(f"Computer koos {computerChoice}. Computer wint!")
+                        computerScore += 1
+                    else:
+                        print(f"Computer koos {computerChoice}. Jij wint!")
+                        playerScore += 1
+                elif playerChoice == "schaar":
+                    if computerChoice == "steen":
+                        print(f"Computer koos {computerChoice}. Computer wint!")
+                        computerScore += 1
+                    else:
+                        print(f"Computer koos {computerChoice}. Jij wint!")
+                        playerScore += 1
+                rounds += 1
+
+    #ask for a replay
+    replay = input("Wil je nog een keer spelen? (ja/nee): ").lower()
+    if replay == "ja":
+        rockPaperScissors()
+    else:
+        print("Bedankt voor het spelen!")
