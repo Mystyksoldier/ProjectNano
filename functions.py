@@ -3,7 +3,7 @@ import random
 def welcome():
     print("**************************************")
     print("*                                    *")
-    print("*      WELKOM BIJ PROJECT NANO!      *")
+    print("*     WELKOM BIJ EPIC NANOGAMES!     *")
     print("*                                    *")
     print("**************************************")
     print("")
@@ -11,13 +11,15 @@ def welcome():
     print("")
 
 def chooseYourGame():
-    choice = input("Kies een spel(1: Raad het nummer, 2: Galgje, 3: Steen papier schaar): ").lower()
+    choice = input("Kies een spel(1: Raad het nummer, 2: Galgje, 3: Steen papier schaar, 4 Bim Bam Baap): ")
     if choice == "1":
         GuessTheNumber()
     elif choice == "2":
         Galgje()
     elif choice == "3":
         rockPaperScissors()
+    elif choice == "4":
+        bimBamBaap()
     else:
         print(f"{choice} is nog niet geimplementeerd")
 
@@ -113,6 +115,7 @@ def Galgje():
 
     goedeLetters = []
     fouteLetters = []
+    name = input("Wat is je naam?: ")
 
     file_name = None
 
@@ -141,6 +144,7 @@ def Galgje():
     while True:
         #shows the game status and the letters that are already guessed
         print(galgjefiguur[len(fouteLetters)])
+        print(f"{name}")
         print("Woord: " + " ".join(status))
         print(f"Foute letters: {', '.join(fouteLetters)}")
 
@@ -222,7 +226,6 @@ def rockPaperScissors():
                 print("Ongeldige invoer. Kies steen, papier of schaar.")
                 continue
             else:
-                #game continues
                 computerChoice = random.choice(["steen", "papier", "schaar"])
 
                 if playerChoice == computerChoice:
@@ -256,3 +259,38 @@ def rockPaperScissors():
         rockPaperScissors()
     else:
         print("Bedankt voor het spelen!")
+
+def bimBamBaap():
+
+    #gets all the questions from the file
+    with open("data/bimbambaap.txt", "r") as f:
+        list = f.read().split(",")
+
+    #creates the first random letter
+    alphabet = str("abcdefghijklmnopqrstuvwxyz")
+    randomLetter = random.choice(alphabet)
+    randomLetter = randomLetter.upper()
+    
+    #say in the beginning how to stop the game
+    print(f"Als je wilt stoppen type dan 'stop' in.")
+
+    #the loop for the rest of the game
+    while True:
+        randomquestion = random.choice(list)
+        print(randomLetter)
+        print(randomquestion)
+        answer = input("Geef antwoord: ").lower()
+
+        if len(answer) == 0 or not answer.isalpha():
+            print("Je moet een antwoord geven")
+            continue
+
+        if answer == "stop":
+            break
+
+        firstLetter = answer[0].upper()
+        if firstLetter == randomLetter:
+            lastLetter = answer[-1].upper()
+            randomLetter = lastLetter
+        else:
+            print(f"Het woord moet beginnen met de letter {randomLetter}")
