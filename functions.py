@@ -11,17 +11,24 @@ def welcome():
     print("")
 
 def chooseYourGame():
-    choice = input("Kies een spel(1: Raad het nummer, 2: Galgje, 3: Steen papier schaar, 4 Bim Bam Baap): ")
-    if choice == "1":
-        GuessTheNumber()
-    elif choice == "2":
-        Galgje()
-    elif choice == "3":
-        rockPaperScissors()
-    elif choice == "4":
-        bimBamBaap()
-    else:
-        print(f"{choice} is nog niet geimplementeerd")
+    while True:
+        choice = input("Kies een spel(1: Raad het nummer, 2: Galgje, 3: Steen papier schaar, 4: Bim Bam Baap, 5: Exit): ")
+        if choice == "1":
+            GuessTheNumber()
+            break
+        elif choice == "2":
+            Galgje()
+            break
+        elif choice == "3":
+            rockPaperScissors()
+        elif choice == "4":
+            bimBamBaap()
+            break
+        elif choice == "5":
+            print("Bedankt voor het spelen!")
+            break
+        else:
+            print(f"{choice} is nog niet geimplementeerd")
 
 def GuessTheNumber():
     TheNumber = random.randint(1, 100)
@@ -44,7 +51,7 @@ def GuessTheNumber():
     if replay == "ja":
         GuessTheNumber()
     else:
-        print("Bedankt voor het spelen!")
+        replayOtherGame()
 
 def Galgje():
     galgjefiguur = [
@@ -183,7 +190,7 @@ def Galgje():
     if replay == "ja":
         Galgje()
     else:
-        print("Bedankt voor het spelen!")
+        replayOtherGame()
 
 def rockPaperScissors():
     
@@ -258,7 +265,7 @@ def rockPaperScissors():
     if replay == "ja":
         rockPaperScissors()
     else:
-        print("Bedankt voor het spelen!")
+        replayOtherGame()
 
 def bimBamBaap():
 
@@ -294,3 +301,17 @@ def bimBamBaap():
             randomLetter = lastLetter
         else:
             print(f"Het woord moet beginnen met de letter {randomLetter}")
+    
+    #ask for a replay
+    replay = input("Wil je nog een keer spelen? (ja/nee): ").lower()
+    if replay == "ja":
+        bimBamBaap()
+    else:
+        replayOtherGame()
+
+def replayOtherGame():
+    replay = input("Wil je een ander spel spelen? (ja/nee): ").lower()
+    if replay == "ja":
+        chooseYourGame()
+    else:
+        print("Bedankt voor het spelen!")
